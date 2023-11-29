@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="description" content="Highlights from ML Prague Conference 2023 - Insights and Takeaways - Marc Julian Schwarz" />
+<meta name="keywords" content="Conference,NLP,LLM,ML,EN,Data Science,2023" />
+<meta name="author" content="Marc Julian Schwarz" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="/assets/styles/index.css" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<link rel="mask-icon" href="/assets/favicons/safari-pinned-tab.svg" color="#5bbad5" />
+<meta name="msapplication-TileColor" content="#da532c" />
+<meta name="theme-color" content="#ffffff" />
+
+    <title>Highlights from ML Prague Conference 2023 - Marc's Notes</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header-container">
+  <div>
+    <a href="/">
+      <h1>Marc's Notes</h1>
+    </a>
+  </div>
+  <div class="links">
+    <a href="https://github.com/marcjulianschwarz">GitHub</a>
+    <a href="https://www.linkedin.com/in/marcjulian/">LinkedIn</a>
+  </div>
+</div>
+
+      <div class="post-title-container">
+        <div>
+          <h2>Highlights from ML Prague Conference 2023</h2>
+          <h3>Insights and Takeaways</h3>
+          <p class="date">08.06.2023</p>
+        </div>
+        <div class="tags"><div class="tag tag-post">
+  <a href="/tags/conference.html">Conference</a>
+</div><div class="tag tag-post">
+  <a href="/tags/nlp.html">NLP</a>
+</div><div class="tag tag-post">
+  <a href="/tags/llm.html">LLM</a>
+</div><div class="tag tag-post">
+  <a href="/tags/ml.html">ML</a>
+</div><div class="tag tag-post">
+  <a href="/tags/en.html">EN</a>
+</div><div class="tag tag-post">
+  <a href="/tags/datascience.html">Data Science</a>
+</div><div class="tag tag-year">
+  <a href="/tags/2023.html">2023</a>
+</div></div>
+      </div>
+      <!-- <hr /> -->
+      <div class="page-container"><p>Last week, I joined machine learning enthusiasts from around the world in Prague for Europe's biggest conference on ML and AI applications, <a href="https://mlprague.com/">ML Prague 2023</a>.</p>
+
+<p><img src="/assets/images/mlprague_sign.jpg" alt="ML Prague Conference 2023 sign at the entrance" /></p>
+
+<p>The event featured a broad lineup of speakers, covering a wide range of topics - from the latest breakthroughs in natural language processing to cutting-edge computer vision applications. In this blog post, I want to write about some of the most interesting talks from the conference and highlight the key takeaways. So, without further ado, let's dive in and start with two topics from the area of image processing.</p>
+
+<h2>Image Processing</h2>
+
+<h3>3D Pose Estimation in Sport</h3>
+
+<p><a href="https://www.linkedin.com/in/piotr-skalski-36b5b4122/">Piotr Skalski</a> from Roboflow showed us how he was able to reproduce parts of the Video Assistant Referee (VAR) system shown in the following clip.</p>
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/WycjDx6giVE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+<p>He used <a href="https://github.com/WongKinYiu/yolov7">YOLOv7</a> and two cameras that record from different perspectives to track a skeleton of his body.</p>
+
+<p>When using this technique, there are some key points to consider: </p>
+
+<ul>
+<li>Use <strong>at least</strong> two cameras with the same configuration 
+<ul>
+<li>For best results, position them above the playing field to reduce player occlusions </li>
+<li>For better results, use more than two cameras </li>
+</ul></li>
+<li>Avoid or remove any lens distortion before processing the video recordings.</li>
+</ul>
+
+<p>Take a look at his <a href="https://github.com/SkalskiP/sport">GitHub repository</a> to see the results.</p>
+
+<h3>Multi-Model Machine Learning based Industrial Vision Tool for Assembly Part Quality Control</h3>
+
+<p><a href="https://www.linkedin.com/in/aimira-baitieva/?originalSubdomain=cz">Aimira Baitieva</a> from Valeo offered insights into anomaly detection in images using neural networks. </p>
+
+<p>One interesting idea was to train a model that outputs embeddings for images, which represent their information well enough. You could then create a <em>"good"</em> embedding for normal parts (without anomalies) to compare against. If an embedded image has a dissimilarity above a certain threshold when compared with the good embedding, one can mark it as an anomaly.</p>
+
+<p>Their final <strong>multi-model</strong> approach, however, consisted of three steps: </p>
+
+<ol>
+<li>Create a segmented anomaly map: 
+<ol>
+<li>Segment the image to get a segmentation map </li>
+<li>Use an anomaly detector to get an anomaly map </li>
+<li>Combine both maps</li>
+</ol></li>
+<li>Extract features from this map </li>
+<li>Classify the image based on the features.</li>
+</ol>
+
+<p><img src="/assets/images/mlprague_valeo.jpg" alt="Image at Conference of multi-model approach" /></p>
+
+<p>This turned out to work quite well and is currently in use.</p>
+
+<h2>Large Language Models</h2>
+
+<h3>LLM-driven Game Characters</h3>
+
+<p><a href="https://www.linkedin.com/in/marekrosa1/?originalSubdomain=cz">Marek Rosa</a> from GoodAI shared their progress in creating LLM-driven game characters. </p>
+
+<p>In their AI Game, characters use a large language model to generate their thoughts, actions and speech. The player can interact with them via a chat interface and with normal in-game actions like exchanging objects. </p>
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/G7ZAPwji4i0?start=92" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+<p>Every character has a long-term memory which has been implemented via a vector database. New thoughts and interactions are preprocessed and then saved into the database. 
+When needed, the database will be queried with respect to </p>
+
+<ul>
+<li>recency </li>
+<li>importance </li>
+<li>and relevance.</li>
+</ul>
+
+<p>The short-term memory is controlled with the current context of the language model.</p>
+
+<p>This combination of short and long-term memory lets agents learn continually by using it to plan actions based on past observations, experience, its current environment and thoughts. </p>
+
+<p>Personally, I think that LLMs will completely redefine the role of NPCs (Non-Player Characters) in video games. Today, the player-controlled character is often the central figure in the game's story while other characters are less important.
+In the near future, the player will take on a more supporting role and the game does not have a clearly defined protagonist. The story will be open-ended and allows the players <strong>and</strong> NPCs to make choices that affect the outcome and direction of it. 
+More games will adopt a sandbox-style approach, similar to Minecraft, where there is no apparent goal or ending of the game. </p>
+
+<p>Other interesting projects that try to use LLMs to create autonomous agents are </p>
+
+<ul>
+<li><a href="https://github.com/Significant-Gravitas/Auto-GPT">AutoGPT</a></li>
+<li><a href="https://github.com/MineDojo/Voyager">Voyager Minecraft Agent</a></li>
+</ul>
+
+<h2>Conclusion</h2>
+
+<p>In conclusion, the ML Prague Conference 2023 was a fantastic opportunity for ML professionals to come together, learn about the latest trends and innovations in the field, and connect with others. I had a great time and am glad that I was able to be there. I hope you enjoyed this short recap of the conference. If you've been there too, let's connect on <a href="https://www.linkedin.com/in/marcjulian/">LinkedIn</a> and have a chat about <strong>your</strong> favorite talks.</p>
+
+<p><img src="/assets/images/mlprague_evening.jpg" alt="Prague City with evening sun" /></p>
+</div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="description" content="How to animate a Radar Plot -  - Marc Julian Schwarz" />
+<meta name="keywords" content="EN,Python,Data Science,Data Visualization,2022" />
+<meta name="author" content="Marc Julian Schwarz" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="/assets/styles/index.css" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<link rel="mask-icon" href="/assets/favicons/safari-pinned-tab.svg" color="#5bbad5" />
+<meta name="msapplication-TileColor" content="#da532c" />
+<meta name="theme-color" content="#ffffff" />
+
+    <title>How to animate a Radar Plot - Marc's Notes</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header-container">
+  <div>
+    <a href="/">
+      <h1>Marc's Notes</h1>
+    </a>
+  </div>
+  <div class="links">
+    <a href="https://github.com/marcjulianschwarz">GitHub</a>
+    <a href="https://www.linkedin.com/in/marcjulian/">LinkedIn</a>
+  </div>
+</div>
+
+      <div class="post-title-container">
+        <div>
+          <h2>How to animate a Radar Plot</h2>
+          <h3></h3>
+          <p class="date">21.02.2022</p>
+        </div>
+        <div class="tags"><div class="tag tag-post">
+  <a href="/tags/en.html">EN</a>
+</div><div class="tag tag-post">
+  <a href="/tags/python.html">Python</a>
+</div><div class="tag tag-post">
+  <a href="/tags/datascience.html">Data Science</a>
+</div><div class="tag tag-post">
+  <a href="/tags/datavisualization.html">Data Visualization</a>
+</div><div class="tag tag-year">
+  <a href="/tags/2022.html">2022</a>
+</div></div>
+      </div>
+      <!-- <hr /> -->
+      <div class="page-container"><p>In this short guide I will show you how to animate a <em>Radar Plot</em> with <a href="https://matplotlib.org">matplotlib</a> in Python.</p>
+
+<h2>Example</h2>
+
+<p>At the end of this guide you will be able to create radar plot animations like this one:</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/9Uk6DoPJqjs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+<h2>Import modules</h2>
+
+<p>The only modules needed are numpy and matplotlib. Import them like this:</p>
+
+<div class="codehilite">
+<pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.animation</span> <span class="kn">import</span> <span class="n">FuncAnimation</span>
+</code></pre>
+</div>
+
+<h2>Data</h2>
+
+<p>For this guide, I am creating some artificial data to make the data structure a bit more visible: </p>
+
+<div class="codehilite">
+<pre><span></span><code><span class="n">length</span> <span class="o">=</span> <span class="mi">250</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="mf">0.06</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">length</span><span class="p">)],</span>
+    <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="mf">0.06</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">length</span><span class="p">)],</span>
+    <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="mf">0.06</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">length</span><span class="p">)],</span>
+    <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="mf">0.06</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">length</span><span class="p">)],</span>
+    <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="mf">0.06</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">length</span><span class="p">)]</span>
+<span class="p">]</span>
+</code></pre>
+</div>
+
+<p><code>data</code> is a list of the different features that you want to plot. Every feature list contains the individual datapoints that will be plotted at frame <code>i</code>. This means all lists have to be the same length.</p>
+
+<p>Now, the first feature list will need to be copied to the end of the data list. This will ensure that the radar plot will be a closed polygon. The first and last datapoint will overlap and therefore close the shape.</p>
+
+<div class="codehilite">
+<pre><span></span><code><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+
+<span class="c1"># This works too </span>
+<span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</code></pre>
+</div>
+
+<p>To achieve this, we can use the syntax <code>*expression</code> to spread out the list and append the first entry.  </p>
+
+<p>From the Python documentation:</p>
+
+<blockquote>
+  <p>If the syntax <code>*expression</code> appears in the function call, <code>expression</code> must evaluate to an <a href="https://docs.python.org/3/glossary.html#term-iterable">iterable</a>. Elements from these iterables are treated as if they were additional positional arguments. For the call<code>f(x1, x2, *y, x3, x4)</code>, if _y_ evaluates to a sequence _y1_, …, _yM_, this is equivalent to a call with M+4 positional arguments _x1_, _x2_, _y1_, …, _yM_, _x3_, _x4_.</p>
+</blockquote>
+
+<h2>Labels</h2>
+
+<p>To create labels for every feature in the data list, create a new list and apply the same procedure with the spread operator.</p>
+
+<div class="codehilite">
+<pre><span></span><code><span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Label 1&quot;</span><span class="p">,</span> <span class="s2">&quot;Label 2&quot;</span><span class="p">,</span> <span class="s2">&quot;Label 3&quot;</span><span class="p">,</span> <span class="s2">&quot;Label 4&quot;</span><span class="p">,</span> <span class="s2">&quot;Label 5&quot;</span><span class="p">]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">labels</span><span class="p">,</span> <span class="n">labels</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+
+<span class="c1"># This works too </span>
+<span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</code></pre>
+</div>
+
+<p>The last step, before plotting begins, will be to calculate evenly distributed positions for the labels like this:</p>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># Get len(labels) equal distance points on a circle</span>
+<span class="n">label_loc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">))</span>
+</code></pre>
+</div>
+
+<h2>Initialize plot</h2>
+
+<p>For every animation in matplotlib an initial plot (using the first datapoints) is needed. To create a radar plot it is important to set the projection method to <code>polar</code>.</p>
+
+<div class="codehilite">
+<pre><span></span><code><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="s1">&#39;polar&#39;</span><span class="p">})</span>
+</code></pre>
+</div>
+
+<p>In a radar plot the x-values will correspond to the positions on the circle (0-360 degrees) and the y-values are the distances from the middle point of the circle.</p>
+
+<p>Therefore the x-values will be the label positions and the y-values will be the datapoints. For the initial plot the first datapoints will be selected using a list comprehension.</p>
+
+<div class="codehilite">
+<pre><span></span><code><span class="n">radar_ln</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label_loc</span><span class="p">,</span> <span class="p">[</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Legend&quot;</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>The labels themselves will be placed at the previously calculated positions around the circle by converting the radians to degrees and setting the labels in the <code>set_thetagrids</code> method. </p>
+
+<div class="codehilite">
+<pre><span></span><code><span class="n">ax</span><span class="o">.</span><span class="n">set_thetagrids</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">label_loc</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower left&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">))</span>
+</code></pre>
+</div>
+
+<p>The limits in a radar plot can be changed too:</p>
+
+<div class="codehilite">
+<pre><span></span><code><span class="n">ax</span><span class="o">.</span><span class="n">set_rmax</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_rmin</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<h2>Update function</h2>
+
+<p>Animating a plot with matplotlib will always include an <code>update(i)</code> function which will update the plot with new data for every frame <code>i</code>. In this case the new data will again be selected with a list comprehension (the same way the plot was initialized).</p>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">radar_ln</span><span class="p">,</span> <span class="n">label_loc</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="n">radar_ln</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="n">label_loc</span><span class="p">,</span> <span class="p">[</span><span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">radar_ln</span>
+</code></pre>
+</div>
+
+<h2>Rendering and saving the animation</h2>
+
+<p>Finally, it is only a matter of assigning the correct variables to <code>FuncAnimation</code> before running the <code>save()</code> method.</p>
+
+<div class="codehilite">
+<pre><span></span><code><span class="n">ani</span> <span class="o">=</span> <span class="n">FuncAnimation</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">fargs</span><span class="o">=</span><span class="p">(</span><span class="n">radar_ln</span><span class="p">,</span> <span class="n">label_loc</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span> <span class="n">interval</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+
+<span class="n">ani</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;animation.mp4&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+</code></pre>
+</div>
+</div>
+    </div>
+  </body>
+</html>

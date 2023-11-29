@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="description" content="Wrote this Keyboard-Centric Todo App with React - What did I learn? -  - Marc Julian Schwarz" />
+<meta name="keywords" content="EN,React,TypeScript,Web,2023" />
+<meta name="author" content="Marc Julian Schwarz" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="/assets/styles/index.css" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<link rel="mask-icon" href="/assets/favicons/safari-pinned-tab.svg" color="#5bbad5" />
+<meta name="msapplication-TileColor" content="#da532c" />
+<meta name="theme-color" content="#ffffff" />
+
+    <title>Wrote this Keyboard-Centric Todo App with React - What did I learn? - Marc's Notes</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header-container">
+  <div>
+    <a href="/">
+      <h1>Marc's Notes</h1>
+    </a>
+  </div>
+  <div class="links">
+    <a href="https://github.com/marcjulianschwarz">GitHub</a>
+    <a href="https://www.linkedin.com/in/marcjulian/">LinkedIn</a>
+  </div>
+</div>
+
+      <div class="post-title-container">
+        <div>
+          <h2>Wrote this Keyboard-Centric Todo App with React - What did I learn?</h2>
+          <h3></h3>
+          <p class="date">10.07.2023</p>
+        </div>
+        <div class="tags"><div class="tag tag-post">
+  <a href="/tags/en.html">EN</a>
+</div><div class="tag tag-post">
+  <a href="/tags/react.html">React</a>
+</div><div class="tag tag-post">
+  <a href="/tags/typescript.html">TypeScript</a>
+</div><div class="tag tag-post">
+  <a href="/tags/web.html">Web</a>
+</div><div class="tag tag-year">
+  <a href="/tags/2023.html">2023</a>
+</div></div>
+      </div>
+      <!-- <hr /> -->
+      <div class="page-container"><p>Hey there, in this post I want to share a side project of mine that I have been working on for a few days – a minimalist, <em>keyboard-centric</em> todo app. While showcasing the main features, I will refer you to some of the React resources and concepts that I used during the development of the app.</p>
+
+<h2>Landing Page - Creating Your First Todo List</h2>
+
+<p>When you first open the app, you are presented with a rather minimalist-looking landing page. You can see the main keyboard shortcuts, and simply typing a name will create your very first todo list. </p>
+
+<p><img src="/assets/images/todo_start.jpg" alt="Start Page of the todo app" /></p>
+
+<blockquote>
+  <p>Implementing all of the keyboard shortcuts and navigation throughout the app taught me a lot about reference management via the <a href="https://react.dev/reference/react/useRef#manipulating-the-dom-with-a-ref">useRef React hook</a> to control the focus of various HTML elements through the DOM.</p>
+</blockquote>
+
+<p>The user interface was intentionally kept simple, to feel just like a piece of paper sitting right there on your desktop, waiting for you to jot down todos. Striking them through with a single keyboard click should feel as seamless and delightful as possible. That's why all of your actions will trigger the dynamic HUD to give you instant feedback.</p>
+
+<p><img src="/assets/images/todo_list_done.jpg" alt="" /></p>
+
+<p><img src="/assets/images/todo_hud.jpg" alt="" /></p>
+
+<blockquote>
+  <p>Implementing the HUD made me use and learn a surprising amount of new React concepts. First, I created a <a href="https://react.dev/reference/react/cloneElement#extracting-logic-into-a-custom-hook">custom React Hook</a> to abstract away the logic of showing and hiding the HUD element. Then, I used a <a href="https://react.dev/reference/react-dom/createPortal#rendering-a-modal-dialog-with-a-portal">React portal</a> to correctly position it above all other content of the app. Lastly, I used the Publish-Subscribe Pattern to implement app-wide messaging via a <a href="https://react.dev/learn/passing-data-deeply-with-context">React context and context provider</a> to facilitate the necessary methods.</p>
+</blockquote>
+
+<h2>When One List Is Not Enough</h2>
+
+<p>Of course, a todo app would be nothing without the ability to create more than one list. None of your brilliant ideas will get lost again; just add them to your second "Ideas" list.</p>
+
+<p><img src="/assets/images/todo_two_list.jpg" alt="" /></p>
+
+<p>But I didn't stop there. You can go crazy and add as many lists as you please. Productivity has never been this easy before 😉.</p>
+
+<p><img src="/assets/images/todo_four_list.jpg" alt="" /></p>
+
+<h2>And Lastly, For All You Productivity Nerds (Including Myself)</h2>
+
+<p>It's 2023, our apps <em>need</em> command bars. </p>
+
+<p><img src="/assets/images/todo_cmd.jpg" alt="" /></p>
+
+<p>The command bar let's you create new lists, delete the ones you don't need anymore, and toggle the currently selected todo item. </p>
+
+<blockquote>
+  <p>Implementing the command bar made me use the <a href="https://kentcdodds.com/blog/the-state-reducer-pattern-with-react-hooks">Reducer Pattern</a> (also see <a href="https://react.dev/reference/react/useReducer">useReducer</a>) so that actions could be fired from everywhere within the app. These actions then trigger all of the backend operations (in this case local storage). Also UI changes are performed, such as showing the already mentioned HUD.</p>
+</blockquote>
+
+<h2>Conclusion</h2>
+
+<p>Overall, this project taught me a lot about the various interesting concepts in the React framework. I had to build reusable components, write lots of CSS and think about ways to communicate between parts of the app. 
+So, quite a success.</p>
+</div>
+    </div>
+  </body>
+</html>

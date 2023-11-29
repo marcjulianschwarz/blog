@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="description" content="Command Line - Aliases and Functions -  - Marc Julian Schwarz" />
+<meta name="keywords" content="EN,TIL,Python,Misc,2023" />
+<meta name="author" content="Marc Julian Schwarz" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="/assets/styles/index.css" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<link rel="mask-icon" href="/assets/favicons/safari-pinned-tab.svg" color="#5bbad5" />
+<meta name="msapplication-TileColor" content="#da532c" />
+<meta name="theme-color" content="#ffffff" />
+
+    <title>Command Line - Aliases and Functions - Marc's Notes</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header-container">
+  <div>
+    <a href="/">
+      <h1>Marc's Notes</h1>
+    </a>
+  </div>
+  <div class="links">
+    <a href="https://github.com/marcjulianschwarz">GitHub</a>
+    <a href="https://www.linkedin.com/in/marcjulian/">LinkedIn</a>
+  </div>
+</div>
+
+      <div class="post-title-container">
+        <div>
+          <h2>Command Line - Aliases and Functions</h2>
+          <h3></h3>
+          <p class="date">05.07.2023</p>
+        </div>
+        <div class="tags"><div class="tag tag-post">
+  <a href="/tags/en.html">EN</a>
+</div><div class="tag tag-post">
+  <a href="/tags/til.html">TIL</a>
+</div><div class="tag tag-post">
+  <a href="/tags/python.html">Python</a>
+</div><div class="tag tag-post">
+  <a href="/tags/misc.html">Misc</a>
+</div><div class="tag tag-year">
+  <a href="/tags/2023.html">2023</a>
+</div></div>
+      </div>
+      <!-- <hr /> -->
+      <div class="page-container"><p>Today I learned (<a href="https://www.marc-julian.de/tags/TIL.html">TIL</a>) that you can define aliases and functions inside of most command line applications like bash or zsh shells. 
+For zsh, the config file <code>.zshrc</code> is located directly in the user folder. You can edit it in any text editer (on some systems, you might need to open it as an admin or run your preferred command with <code>sudo</code>).</p>
+
+<p>When you are done, run the following command to execute the file and reload all defined aliases and functions.</p>
+
+<div class="codehilite">
+<pre><span></span><code><span class="nb">source</span><span class="w"> </span>.zshrc
+</code></pre>
+</div>
+
+<p>Here are some of <em>my favorites</em>:</p>
+
+<h2>Conda</h2>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># Run to get bash autocomplete functions in zsh shell </span>
+autoload<span class="w"> </span>bashcompinit
+bashcompinit
+autoload<span class="w"> </span>-Uz<span class="w"> </span>compinit
+compinit
+
+<span class="c1"># List all conda environments</span>
+<span class="k">function</span><span class="w"> </span>envs<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span>conda<span class="w"> </span>info<span class="w"> </span>--env
+<span class="o">}</span>
+
+<span class="c1"># Activate environment with autocompletion</span>
+<span class="k">function</span><span class="w"> </span>aenv<span class="o">(){</span>
+<span class="w">    </span>conda<span class="w"> </span>activate<span class="w"> </span><span class="nv">$1</span>
+<span class="o">}</span>
+
+<span class="k">function</span><span class="w"> </span>extract_env_names<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="c1"># Extracts the names of the environments from the output of `conda info --env`</span>
+<span class="w">    </span>conda<span class="w"> </span>info<span class="w"> </span>--env<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span>-F<span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;{print $1}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-n<span class="w"> </span>+3
+<span class="o">}</span>
+
+<span class="k">function</span><span class="w"> </span>_aenv<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="c1"># Get the current word being completed</span>
+<span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">cur</span><span class="o">=</span><span class="si">${</span><span class="nv">COMP_WORDS</span><span class="p">[COMP_CWORD]</span><span class="si">}</span>
+
+<span class="w">    </span><span class="c1"># Generate possible matches and store them in the COMPREPLY variable</span>
+<span class="w">    </span><span class="c1"># -W expects a list of possible matches</span>
+<span class="w">    </span><span class="nv">COMPREPLY</span><span class="o">=(</span><span class="k">$(</span><span class="nb">compgen</span><span class="w"> </span>-W<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>extract_env_names<span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span>--<span class="w"> </span><span class="nv">$cur</span><span class="k">)</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="c1"># Register the completion function to be called for the aenv command</span>
+<span class="nb">complete</span><span class="w"> </span>-F<span class="w"> </span>_aenv<span class="w"> </span>aenv
+
+<span class="k">function</span><span class="w"> </span>denv<span class="o">(){</span>
+<span class="w">    </span>conda<span class="w"> </span>deactivate
+<span class="o">}</span>
+
+<span class="c1"># Create a conda environment with a name and python version</span>
+<span class="k">function</span><span class="w"> </span>cenv<span class="o">(){</span>
+<span class="w">    </span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span><span class="nv">$1</span><span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="nv">$2</span>
+<span class="o">}</span>
+
+<span class="k">function</span><span class="w"> </span>renv<span class="o">(){</span>
+<span class="w">    </span>conda<span class="w"> </span>remove<span class="w"> </span>-n<span class="w"> </span><span class="nv">$1</span><span class="w"> </span>--all
+<span class="o">}</span>
+
+<span class="c1"># Create a python kernel from a conda environment</span>
+<span class="k">function</span><span class="w"> </span>envtokernel<span class="o">(){</span>
+<span class="w">    </span>python<span class="w"> </span>-m<span class="w"> </span>ipykernel<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>--name<span class="w"> </span><span class="nv">$1</span><span class="w"> </span>--display-name<span class="w"> </span><span class="s2">&quot;Python (</span><span class="nv">$1</span><span class="s2">)&quot;</span>
+<span class="o">}</span>
+
+<span class="c1"># Create a conda environment with some sane default packages that I use a lot in data science projects </span>
+<span class="k">function</span><span class="w"> </span>defaultenv<span class="o">(){</span>
+<span class="w">    </span>cenv<span class="w"> </span><span class="nv">$1</span><span class="w"> </span><span class="nv">$2</span>
+<span class="w">    </span>conda<span class="w"> </span>activate<span class="w"> </span><span class="nv">$1</span>
+<span class="w">    </span>pip<span class="w"> </span>install<span class="w"> </span>pandas<span class="w"> </span>numpy<span class="w"> </span>matplotlib<span class="w"> </span>seaborn<span class="w"> </span>scikit-learn<span class="w"> </span>notebook
+<span class="w">    </span>envtokernel<span class="w"> </span><span class="nv">$1</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h2>Mark paths to directly jump to them from anywhere</h2>
+
+<p>Inspired by the <code>mark</code> and <code>cdd</code> function in this <a href="https://chris-said.io/2014/10/16/jumping-quickly-between-deep-directories/">blog post</a> by Chris Said, I added two more additional functions <code>opend</code> and <code>coded</code> to quickly open a folder in Finder or VSCode.</p>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># Run to get bash autocomplete functions in zsh shell </span>
+autoload<span class="w"> </span>bashcompinit
+bashcompinit
+autoload<span class="w"> </span>-Uz<span class="w"> </span>compinit
+compinit
+
+<span class="nb">export</span><span class="w"> </span><span class="nv">MARKPATH</span><span class="o">=</span><span class="s2">&quot;/Users/username/marks&quot;</span>
+
+<span class="c1"># jump to a marked path</span>
+<span class="k">function</span><span class="w"> </span>cdd<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="c1"># change directory to the marked path, if it does not exist, ignore the error and print &quot;No such mark: $1&quot; instead</span>
+<span class="w">    </span><span class="nb">cd</span><span class="w"> </span>-P<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$MARKPATH</span><span class="s2">/</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;No such mark: </span><span class="nv">$1</span><span class="s2">&quot;</span>
+<span class="o">}</span>
+
+<span class="k">function</span><span class="w"> </span>opend<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span>open<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$MARKPATH</span><span class="s2">/</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;No such mark: </span><span class="nv">$1</span><span class="s2">&quot;</span>
+<span class="o">}</span>
+
+<span class="k">function</span><span class="w"> </span>coded<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span>code<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$MARKPATH</span><span class="s2">/</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;No such mark: </span><span class="nv">$1</span><span class="s2">&quot;</span>
+<span class="o">}</span>
+
+<span class="c1"># mark a path for quick access</span>
+<span class="k">function</span><span class="w"> </span>mark<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="c1"># create a folder to store marks</span>
+<span class="w">    </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$MARKPATH</span><span class="s2">&quot;</span>
+
+<span class="w">    </span><span class="c1"># create a symlink in the mark folder to the current directory</span>
+<span class="w">    </span>ln<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$MARKPATH</span><span class="s2">/</span><span class="nv">$1</span><span class="s2">&quot;</span>
+<span class="o">}</span>
+
+<span class="c1"># delete a mark</span>
+<span class="k">function</span><span class="w"> </span>unmark<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="c1"># remove the symlink</span>
+<span class="w">    </span>rm<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$MARKPATH</span><span class="s2">/</span><span class="nv">$1</span><span class="s2">&quot;</span>
+<span class="o">}</span>
+
+<span class="c1"># list all marks</span>
+<span class="k">function</span><span class="w"> </span>marks<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="c1"># list all symlinks in the mark folder with some formatting magic to make it look nicer</span>
+<span class="w">    </span><span class="se">\l</span>s<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$MARKPATH</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-n<span class="w"> </span>+2<span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s/  / /g&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="s1">&#39; &#39;</span><span class="w"> </span>-f9-<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span>-F<span class="w"> </span><span class="s1">&#39; -&gt; &#39;</span><span class="w"> </span><span class="s1">&#39;{printf &quot;%-10s -&gt; %s\n&quot;, $1, $2}&#39;</span>
+<span class="o">}</span>
+
+<span class="c1"># autocomplete marks</span>
+<span class="k">function</span><span class="w"> </span>_cdd<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="c1"># get the current word being completed</span>
+<span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">cur</span><span class="o">=</span><span class="si">${</span><span class="nv">COMP_WORDS</span><span class="p">[COMP_CWORD]</span><span class="si">}</span>
+<span class="w">    </span><span class="c1"># generate possible matches and store them in the COMPREPLY variable</span>
+<span class="w">    </span><span class="nv">COMPREPLY</span><span class="o">=(</span><span class="k">$(</span><span class="nb">compgen</span><span class="w"> </span>-W<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>ls<span class="w"> </span><span class="nv">$MARKPATH</span><span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span>--<span class="w"> </span><span class="nv">$cur</span><span class="k">)</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="c1"># register the completion function to be called for the cdd command</span>
+<span class="nb">complete</span><span class="w"> </span>-F<span class="w"> </span>_cdd<span class="w"> </span>cdd
+<span class="nb">complete</span><span class="w"> </span>-F<span class="w"> </span>_cdd<span class="w"> </span>opend
+<span class="nb">complete</span><span class="w"> </span>-F<span class="w"> </span>_cdd<span class="w"> </span>coded
+</code></pre>
+</div>
+
+<h2>Python</h2>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">function</span><span class="w"> </span>py<span class="o">(){</span>
+<span class="w">    </span>python<span class="w"> </span><span class="nv">$1</span>
+<span class="o">}</span>
+
+<span class="k">function</span><span class="w"> </span>pyv<span class="o">(){</span>
+<span class="w">    </span>python<span class="w"> </span>--version
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h2>Streamlit</h2>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">function</span><span class="w"> </span>strun<span class="o">(){</span>
+<span class="w">    </span>streamlit<span class="w"> </span>run<span class="w"> </span><span class="nv">$1</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h2>Jupyter</h2>
+
+<div class="codehilite">
+<pre><span></span><code><span class="nb">alias</span><span class="w"> </span><span class="nv">jnb</span><span class="o">=</span><span class="s2">&quot;jupyter notebook&quot;</span>
+</code></pre>
+</div>
+
+<h2>Git</h2>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">function</span><span class="w"> </span>gitc<span class="o">(){</span>
+<span class="w">    </span>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>
+<span class="o">}</span>
+
+<span class="nb">alias</span><span class="w"> </span><span class="nv">gits</span><span class="o">=</span><span class="s2">&quot;git status&quot;</span>
+<span class="nb">alias</span><span class="w"> </span><span class="nv">gitp</span><span class="o">=</span><span class="s2">&quot;git push&quot;</span>
+<span class="nb">alias</span><span class="w"> </span><span class="nv">gitpl</span><span class="o">=</span><span class="s2">&quot;git pull&quot;</span>
+<span class="nb">alias</span><span class="w"> </span><span class="nv">gitb</span><span class="o">=</span><span class="s2">&quot;git branch&quot;</span>
+<span class="nb">alias</span><span class="w"> </span><span class="nv">gitl</span><span class="o">=</span><span class="s2">&quot;git log&quot;</span>
+<span class="nb">alias</span><span class="w"> </span><span class="nv">gitd</span><span class="o">=</span><span class="s2">&quot;git diff&quot;</span>
+</code></pre>
+</div>
+
+<h2>NPM</h2>
+
+<div class="codehilite">
+<pre><span></span><code><span class="nb">alias</span><span class="w"> </span><span class="nv">ninit</span><span class="o">=</span><span class="s2">&quot;npm init -y&quot;</span>
+<span class="nb">alias</span><span class="w"> </span><span class="nv">nstart</span><span class="o">=</span><span class="s2">&quot;npm start&quot;</span>
+<span class="nb">alias</span><span class="w"> </span><span class="nv">nbuild</span><span class="o">=</span><span class="s2">&quot;npm run build&quot;</span>
+<span class="nb">alias</span><span class="w"> </span><span class="nv">ntest</span><span class="o">=</span><span class="s2">&quot;npm run test&quot;</span>
+<span class="nb">alias</span><span class="w"> </span><span class="nv">ninstall</span><span class="o">=</span><span class="s2">&quot;npm install&quot;</span>
+</code></pre>
+</div>
+
+<h2>ImageMagick</h2>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># d for do mogrify </span>
+<span class="c1"># I use this to automatically convert images for this blog </span>
+<span class="k">function</span><span class="w"> </span>dmog<span class="o">(){</span>
+<span class="w">    </span>mogrify<span class="w"> </span>-format<span class="w"> </span>jpg<span class="w"> </span>-geometry<span class="w"> </span>1300x<span class="w"> </span>-quality<span class="w"> </span><span class="nv">$1</span><span class="w"> </span>*.png
+<span class="o">}</span>
+</code></pre>
+</div>
+</div>
+    </div>
+  </body>
+</html>

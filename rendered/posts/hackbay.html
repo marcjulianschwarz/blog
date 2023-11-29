@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="description" content="Hackbay 2023 - A hackathon for everyone - Disrupting the DATEV HR Process with AI - Marc Julian Schwarz" />
+<meta name="keywords" content="EN,Hackathon,NLP,LLM,ML,Data Science,2023" />
+<meta name="author" content="Marc Julian Schwarz" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="/assets/styles/index.css" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<link rel="mask-icon" href="/assets/favicons/safari-pinned-tab.svg" color="#5bbad5" />
+<meta name="msapplication-TileColor" content="#da532c" />
+<meta name="theme-color" content="#ffffff" />
+
+    <title>Hackbay 2023 - A hackathon for everyone - Marc's Notes</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header-container">
+  <div>
+    <a href="/">
+      <h1>Marc's Notes</h1>
+    </a>
+  </div>
+  <div class="links">
+    <a href="https://github.com/marcjulianschwarz">GitHub</a>
+    <a href="https://www.linkedin.com/in/marcjulian/">LinkedIn</a>
+  </div>
+</div>
+
+      <div class="post-title-container">
+        <div>
+          <h2>Hackbay 2023 - A hackathon for everyone</h2>
+          <h3>Disrupting the DATEV HR Process with AI</h3>
+          <p class="date">05.06.2023</p>
+        </div>
+        <div class="tags"><div class="tag tag-post">
+  <a href="/tags/en.html">EN</a>
+</div><div class="tag tag-post">
+  <a href="/tags/hackathon.html">Hackathon</a>
+</div><div class="tag tag-post">
+  <a href="/tags/nlp.html">NLP</a>
+</div><div class="tag tag-post">
+  <a href="/tags/llm.html">LLM</a>
+</div><div class="tag tag-post">
+  <a href="/tags/ml.html">ML</a>
+</div><div class="tag tag-post">
+  <a href="/tags/datascience.html">Data Science</a>
+</div><div class="tag tag-year">
+  <a href="/tags/2023.html">2023</a>
+</div></div>
+      </div>
+      <!-- <hr /> -->
+      <div class="page-container"><p>Last month, I attended the two-day <a href="https://www.hackbay.de/">Hackbay 2023 Hackathon</a> and, together with <a href="https://www.linkedin.com/in/maximilian-kasper-693648174/">Maximilian Kasper</a>, we worked on DATEV's challenge called <em>"Disrupting DATEV's HR Process with AI"</em>.</p>
+
+<p><img src="/assets/images/hackbay.jpg" alt="Hackathon" /></p>
+
+<h2>Our Prototype</h2>
+
+<p>On day one, we started with some brainstorming to generate good ideas that could make the HR process as easy and frictionless as possible for both the applicant and the company. In the end, we decided to concentrate on the part of the process where applicants search for job opportunities and companies try to find fitting candidates for their job offers.</p>
+
+<p>We wanted to create a job-offer platform that uses new advances in Natural Language Processing (NLP) to automatically suggest fitting jobs based on <strong>raw resume text</strong> files. Applicants should be able to upload their resume and instantly see jobs that fit their academic and professional career, their skills, languages, and interests. Also, the applicant should be able to weigh their experiences and interests in a way such that only relevant jobs will be shown.</p>
+
+<p>The platform removes the need for creating a detailed profile and relies only on the applicant's resume. This way, no extra work is necessary.</p>
+
+<p><img src="/assets/images/hackbay_mac.jpg" alt="Coding at the hackathon" /></p>
+
+<p>We decided to use <a href="https://streamlit.io/">Streamlit</a> as the frontend framework to quickly create a user interface that was fast to iterate on. </p>
+
+<p>For the recommendation system, we used the following approach:</p>
+
+<ol>
+<li>Create an embedding for the resume text 
+<ol>
+<li>Use a <code>BertTokenizer</code> to encode the text </li>
+<li>Use a <code>BertModel</code> to embed the encoded tokens </li>
+</ol></li>
+<li>Create an embedding for every job posting 
+<ol>
+<li>Use a <code>BertTokenizer</code> to encode the text </li>
+<li>Use a <code>BertModel</code> to embed the encoded tokens </li>
+<li>Use an <code>AnnoyIndex</code> to store the embedding vectors for easy and fast retrieval via their similarity  (<a href="https://github.com/spotify/annoy">spotify/annoy</a>)</li>
+</ol></li>
+<li>Query the index with the resume embedding to get the <strong>k</strong> most similar job postings </li>
+<li>Filter and sort similar job postings based on the user's selected weights and hard constraints (e.g. location, language, etc.)</li>
+</ol>
+
+<p>So, in the end, an applicant was able to upload their raw resume to the platform, which would automatically find the most fitting job postings and output them as a sorted list. The applicant could then easily apply to one or more of the listed jobs. </p>
+
+<p>Of course, this was only a prototype, so there were still a lot of issues that one would have to tackle to actually bring the platform into production.</p>
+
+<p>For example, at the moment, companies and/or applicants could easily <em>hack</em> the recommender by writing their job postings and resumes in a way such that they are semantically very similar. This could be achieved by long keyword lists that outweigh all other factors.</p>
+
+<h2>Conclusion</h2>
+
+<p>In summary, we developed a prototype job-offer platform that utilizes NLP to suggest fitting job opportunities based solely on a resume text file. The platform removes the need for an applicant to create a detailed profile, simplifying the hiring process for both employers and applicants. </p>
+
+<p>Overall, attending the Hackbay 2023 Hackathon was a valuable experience that allowed us to challenge ourselves to develop a ML solution within a short timeframe.</p>
+
+<p>Additionally, you can check out the aftermovie for the 2023 Hackbay Hackathon to get a glimpse of the event's highlights:</p>
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/IyNvbw1OFq4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+    </div>
+  </body>
+</html>
